@@ -54,8 +54,10 @@
      bind
      curl
      direnv
+     fzf
      git
      mosh
+     nixfmt
      stow
      tldr
      tmux     
