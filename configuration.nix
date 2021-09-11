@@ -173,22 +173,50 @@
   #  openFirewall = true;
   #  dataDir = "/mnt/blestion/rtorrent_downloads";
   #};
-  
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking = {
-    firewall.allowedTCPPorts = [ 139 445 9091 ]; # 9091 is Transmission's Web interface
+    firewall.allowedTCPPorts = [
+      139
+      445
+      7788 # for Traefik
+      7789 # for Traefik dashboard
+      9091 # 9091 is Transmission's Web interface
+    ];
     firewall.allowedUDPPorts = [ 137 138 ];
     firewall.allowPing = true;
-    nameservers = [
-      "8.8.4.4"
-      "8.8.8.8"
-      "192.168.1.1"
-    ];
+    nameservers = [ "8.8.4.4" "8.8.8.8" "192.168.1.1" ];
   };
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # so we can use custom subdomains in development, and with traefik
+  services.dnsmasq = {
+    enable = true;
+    extraConfig = ''
+      address=/localhost/127.0.0.1
+      address=/nixos/192.168.1.103
+      address=/strator/192.168.1.98
+    '';
+  };
+
+  services.traefik = {
+    enable = true;
+    staticConfigOptions = {
+      entryPoints = {
+        web = { address = ":7788"; };
+        traefik = { address = ":7789"; };
+      };
+      group = "docker";
+      api = {
+        dashboard = true;
+        insecure = true;
+      };
+      providers.docker = true;
+    };
+  };
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -210,9 +238,9 @@
   # services.xserver.desktopManager.plasma5.enable = true;
   # https://github.com/NixOS/nixpkgs/issues/47201#issuecomment-423798284
   virtualisation.docker.enable = true;
-      
-  users.groups.docker = {};
-   
+
+  users.groups.docker = { members = [ "traefik" ]; };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rkb = {
     isNormalUser = true;
