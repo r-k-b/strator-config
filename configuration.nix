@@ -5,10 +5,9 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -49,21 +48,21 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     autojump
-     autossh
-     bind
-     curl
-     direnv
-     fzf
-     git
-     mosh
-     nixfmt
-     stow
-     tldr
-     tmux     
-     vim
-     wget
-     xsel
+    autojump
+    autossh
+    bind
+    curl
+    direnv
+    fzf
+    git
+    mosh
+    nixfmt
+    stow
+    tldr
+    tmux
+    vim
+    wget
+    xsel
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -76,16 +75,16 @@
   #   enableSSHSupport = true;
   #   pinentryFlavor = "gnome3";
   # };
-  
+
   fileSystems."/mnt/blestion" = {
     device = "/dev/disk/by-label/blestion";
     fsType = "ext4";
-  };  
+  };
 
   fileSystems."/mnt/smiticia" = {
     device = "/dev/disk/by-label/smiticia";
     fsType = "ext4";
-  };  
+  };
 
   # List services that you want to enable:
 
@@ -141,7 +140,7 @@
       #  #"force group" = "groupname";
       #};
     };
-  }; 
+  };
 
   services.transmission = {
     enable = true;
@@ -223,7 +222,7 @@
       "wheel" # Enable ‘sudo’ for the user.
     ];
     initialPassword = "hunter2";
-  };    
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
