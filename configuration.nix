@@ -142,6 +142,22 @@
     };
   };
 
+  services.minidlna = {
+    enable = true;
+    mediaDirs = [
+      "/mnt/blestion/transmission/Downloads"
+    ];
+    friendlyName = "strator_dlna";
+  };
+
+  # Increase the amount of inotify watchers
+  # Note that inotify watches consume 1kB on 64-bit machines.
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches"   = 1048576;   # default:  8192
+    "fs.inotify.max_user_instances" =    1024;   # default:   128
+    "fs.inotify.max_queued_events"  =   32768;   # default: 16384
+  };
+
   services.transmission = {
     enable = true;
     openFirewall = true;
@@ -183,9 +199,14 @@
       445
       7788 # for Traefik
       7789 # for Traefik dashboard
+      8200 # minidlna
       9091 # 9091 is Transmission's Web interface
     ];
-    firewall.allowedUDPPorts = [ 137 138 ];
+    firewall.allowedUDPPorts = [
+      137
+      138
+      1900 # minidlna
+    ];
     firewall.allowPing = true;
     nameservers = [ "8.8.4.4" "8.8.8.8" "192.168.1.1" ];
   };
