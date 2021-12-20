@@ -238,6 +238,14 @@
       };
       providers.docker = true;
     };
+    dynamicConfigOptions = {
+      tls = {
+	certificates = [{
+		certFile = "/home/rkb/certbot/config/archive/strator.berals.wtf/fullchain1.pem";
+		keyFile = "/home/rkb/certbot/config/archive/strator.berals.wtf/privkey1.pem";
+	}]; 
+      };
+    };
   };
 
   # Enable CUPS to print documents.
