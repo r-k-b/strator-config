@@ -144,18 +144,16 @@
 
   services.minidlna = {
     enable = true;
-    mediaDirs = [
-      "/mnt/blestion/transmission/Downloads"
-    ];
+    mediaDirs = [ "/mnt/blestion/transmission/Downloads" ];
     friendlyName = "strator_dlna";
   };
 
   # Increase the amount of inotify watchers
   # Note that inotify watches consume 1kB on 64-bit machines.
   boot.kernel.sysctl = {
-    "fs.inotify.max_user_watches"   = 1048576;   # default:  8192
-    "fs.inotify.max_user_instances" =    1024;   # default:   128
-    "fs.inotify.max_queued_events"  =   32768;   # default: 16384
+    "fs.inotify.max_user_watches" = 1048576; # default:  8192
+    "fs.inotify.max_user_instances" = 1024; # default:   128
+    "fs.inotify.max_queued_events" = 32768; # default: 16384
   };
 
   services.transmission = {
@@ -240,10 +238,12 @@
     };
     dynamicConfigOptions = {
       tls = {
-	certificates = [{
-		certFile = "/home/rkb/certbot/config/archive/strator.berals.wtf/fullchain1.pem";
-		keyFile = "/home/rkb/certbot/config/archive/strator.berals.wtf/privkey1.pem";
-	}]; 
+        certificates = [{
+          certFile =
+            "/home/rkb/certbot/config/archive/strator.berals.wtf/fullchain1.pem";
+          keyFile =
+            "/home/rkb/certbot/config/archive/strator.berals.wtf/privkey1.pem";
+        }];
       };
     };
   };
