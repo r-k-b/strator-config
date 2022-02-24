@@ -259,7 +259,7 @@ in {
         };
 
         services.prometheus_service.loadBalancer.servers =
-          [{ url = "http://localhost:9090"; }];
+          [{ url = "http://localhost:${toString prometheusPort}"; }];
       };
     };
   };
@@ -285,7 +285,7 @@ in {
       }
       {
         job_name = "prometheus";
-        static_configs = [{ targets = [ "localhost:9090" ]; }];
+        static_configs = [{ targets = [ "localhost:${toString prometheusPort}" ]; }];
       }
       {
         job_name = "nodes";
