@@ -3,8 +3,8 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
-{
+let prometheusPort = 9090;
+in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -198,6 +198,7 @@
       7788 # for Traefik
       7789 # for Traefik dashboard
       8200 # minidlna
+      prometheusPort
       9091 # 9091 is Transmission's Web interface
     ];
     firewall.allowedUDPPorts = [
@@ -244,6 +245,75 @@
           keyFile =
             "/home/rkb/certbot/config/archive/strator.berals.wtf/privkey1.pem";
         }];
+      };
+
+      http = {
+        routers.prometheus_router_1 = {
+          rule = "Host(`prometheus.landing.phd.com.au`)";
+          service = "prometheus_service";
+        };
+
+        routers.prometheus_router_2 = {
+          rule = "Host(`prometheus.strator`)";
+          service = "prometheus_service";
+        };
+
+        services.prometheus_service.loadBalancer.servers =
+          [{ url = "http://localhost:9090"; }];
+      };
+    };
+  };
+
+  services.prometheus = {
+    enable = true;
+    port = prometheusPort;
+    scrapeConfigs = [
+      {
+        job_name = "hippo_backends";
+        metrics_path = "/api/metrics";
+        static_configs = [{
+          targets = [
+            "phdcchippo.phd.com.au:5080"
+            "phdcchpdev.phd.com.au:5080"
+            "phdccrtdev.phd.com.au:5080"
+            "phdccwestdev.phd.com.au:5080"
+            "nixos:5081" # rt
+            "nixos:5084" # wf
+            "nixos:5085" # hp
+          ];
+        }];
+      }
+      {
+        job_name = "prometheus";
+        static_configs = [{ targets = [ "localhost:9090" ]; }];
+      }
+      {
+        job_name = "nodes";
+        static_configs = [{ targets = [ "localhost:9100" ]; }];
+      }
+    ];
+    exporters = {
+      node = {
+        enable = true;
+        enabledCollectors = [
+          "conntrack"
+          "diskstats"
+          "entropy"
+          "filefd"
+          "filesystem"
+          "loadavg"
+          "mdadm"
+          "meminfo"
+          "netdev"
+          "netstat"
+          "stat"
+          "time"
+          "vmstat"
+          "systemd"
+          "logind"
+          "interrupts"
+          "ksmd"
+        ];
       };
     };
   };
