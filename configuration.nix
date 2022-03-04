@@ -172,7 +172,6 @@ in {
       rpc-port = 9091;
       rpc-whitelist = "127.0.0.1,192.168.*.*";
       script-torrent-done-enabled = false;
-      script-torrent-done-filename = "";
       umask = 2;
       utp-enabled = true;
       watch-dir = "/mnt/blestion/transmission/watchdir";
