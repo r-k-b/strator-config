@@ -235,6 +235,7 @@ in {
         insecure = true;
       };
       providers.docker = true;
+      metrics = { prometheus = true; };
     };
     dynamicConfigOptions = {
       tls = {
@@ -259,6 +260,19 @@ in {
 
         services.prometheus_service.loadBalancer.servers =
           [{ url = "http://localhost:${toString prometheusPort}"; }];
+
+        routers.traefikMetrics_router_1 = {
+          rule = "Host(`traefik.landing.phd.com.au`)";
+          service = "traefikMetrics_service";
+        };
+
+        routers.traefikMetrics_router_2 = {
+          rule = "Host(`traefik.strator`)";
+          service = "traefikMetrics_service";
+        };
+
+        services.traefikMetrics_service.loadBalancer.servers =
+          [{ url = "http://localhost:7789"; }];
       };
     };
   };
@@ -284,7 +298,21 @@ in {
       }
       {
         job_name = "prometheus";
-        static_configs = [{ targets = [ "localhost:${toString prometheusPort}" ]; }];
+        static_configs =
+          [{ targets = [ "localhost:${toString prometheusPort}" ]; }];
+      }
+      {
+        job_name = "traefik";
+        static_configs = [{ targets = [ "localhost:7789" ]; }];
+      }
+      {
+        job_name = "traefik_via_tunnel";
+        static_configs = [{
+          targets = [
+            # so we can see when the vpn+ssh tunnel goes down
+            "traefik.landing.phd.com.au:45632"
+          ];
+        }];
       }
       {
         job_name = "nodes";
