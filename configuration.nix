@@ -316,7 +316,7 @@ in {
       }
       {
         job_name = "nodes";
-        static_configs = [{ targets = [ "localhost:9100" ]; }];
+        static_configs = [{ targets = [ "localhost:9100" "nixos:9100" ]; }];
       }
     ];
     exporters = {
