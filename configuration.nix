@@ -147,6 +147,7 @@ in {
     enable = true;
     mediaDirs = [ "/mnt/blestion/transmission/Downloads" ];
     friendlyName = "strator_dlna";
+    announceInterval = 10; # in seconds; default is 15*60
   };
 
   # Increase the amount of inotify watchers
