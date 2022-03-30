@@ -275,6 +275,20 @@ in {
 
         services.traefikMetrics_service.loadBalancer.servers =
           [{ url = "http://localhost:7789"; }];
+
+        routers.javacat_router_1 = {
+          rule = "Host(`cat.landing.phd.com.au`)";
+          service = "javacat_service";
+        };
+
+        routers.javacat_router_2 = {
+          rule = "Host(`cat.strator`)";
+          service = "javacat_service";
+        };
+
+        services.javacat_service.loadBalancer.servers =
+          [{ url = "http://localhost:8080"; }];
+
       };
     };
   };
