@@ -55,6 +55,7 @@ in {
     direnv
     fzf
     git
+    htop
     mosh
     nixfmt
     stow
