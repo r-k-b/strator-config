@@ -50,9 +50,13 @@ in {
   environment.systemPackages = with pkgs; [
     autojump
     autossh
+    bat # for colorized previews
     bind
+    broot # for quickly exploring folders
     curl
     direnv
+    du-dust # for quickly finding where the disk space has gone
+    duf # a better df
     fzf
     git
     htop
