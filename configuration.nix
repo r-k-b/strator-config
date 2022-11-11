@@ -293,6 +293,21 @@ in {
         services.javacat_service.loadBalancer.servers =
           [{ url = "http://localhost:8080"; }];
 
+        ###
+
+        routers.hippoadmin_router_1 = {
+          rule = "Host(`hippoadmin.landing.phd.com.au`)";
+          service = "hippoadmin_service";
+        };
+
+        routers.hippoadmin_router_2 = {
+          rule = "Host(`hippoadmin.strator`)";
+          service = "hippoadmin_service";
+        };
+
+        services.hippoadmin_service.loadBalancer.servers =
+          [{ url = "http://localhost:7070"; }];
+
       };
     };
   };
