@@ -149,9 +149,11 @@ in {
 
   services.minidlna = {
     enable = true;
-    mediaDirs = [ "/mnt/blestion/transmission/Downloads" ];
-    friendlyName = "strator_dlna";
-    announceInterval = 10; # in seconds; default is 15*60
+    settings = {
+      media_dir = [ "/mnt/blestion/transmission/Downloads" ];
+      friendly_name = "strator_dlna";
+      notify_interval = 10; # in seconds; default is 15*60
+    };
   };
 
   # Increase the amount of inotify watchers
