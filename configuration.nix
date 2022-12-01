@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 let prometheusPort = 9090;
+  minidlna-rebuild = pkgs.writeShellScriptBin "minidlna-rebuild" ''
+    ${pkgs.minidlna}/bin/minidlnad -R && systemctl restart minidlna
+  '';
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -60,6 +63,7 @@ in {
     fzf
     git
     htop
+    minidlna-rebuild # to get new files to appear in VLC
     mosh
     nixfmt
     stow
