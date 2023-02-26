@@ -160,6 +160,16 @@ in {
     };
   };
 
+  services.calibre-web = {
+    enable = true;
+    openFirewall = true;
+    listen = { ip = "0.0.0.0"; };
+    options = {
+      # calibreLibrary = "/var/lib/calibre-web";
+      enableBookUploading = true;
+    };
+  };
+
   # Increase the amount of inotify watchers
   # Note that inotify watches consume 1kB on 64-bit machines.
   boot.kernel.sysctl = {
