@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 let prometheusPort = 9090;
   minidlna-rebuild = pkgs.writeShellScriptBin "minidlna-rebuild" ''
-    ${pkgs.minidlna}/bin/minidlnad -R && systemctl restart minidlna
+    ${pkgs.minidlna}/bin/minidlnad -R && systemctl restart minidlna.service
   '';
 in {
   imports = [ # Include the results of the hardware scan.
