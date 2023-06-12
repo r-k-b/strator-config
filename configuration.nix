@@ -399,12 +399,20 @@ in {
     };
   };
 
-  services.github-runner = {
-    enable = true;
-    url = "https://github.com/r-k-b/tulars-private";
-    # tip: the tokens generated through the "Create self-hosted runner" web UI
-    # expire ludicrously fast; if you get a 404, try getting a fresh token.
-    tokenFile = "/home/rkb/.github-runner/tokens/tulars-private";
+  nixpkgs.config.permittedInsecurePackages = [
+    "nodejs-16.20.0" # for github-runners; see https://github.com/orgs/community/discussions/53217
+  ];
+
+  services.github-runners = {
+    phdsys-webapp = {
+      enable = true;
+      url = "https://github.com/Pacific-Health-Dynamics/PHDSys-webapp";
+      # tip: the tokens generated through the "Create self-hosted runner" web UI
+      # expire ludicrously fast; if you get a 404, try getting a fresh token.
+      tokenFile = "/home/rkb/.github-runner/tokens/phdsys-webapp";
+      extraLabels = [ "nix" ];
+      extraPackages = with pkgs; [ openssh which ];
+    };
   };
 
   # Enable CUPS to print documents.
