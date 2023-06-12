@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 let prometheusPort = 9090;
   minidlna-rebuild = pkgs.writeShellScriptBin "minidlna-rebuild" ''
-    ${pkgs.minidlna}/bin/minidlnad -R && systemctl restart minidlna.service
+    doas -u minidlna ${pkgs.minidlna}/bin/minidlnad -R && sudo systemctl restart minidlna.service
   '';
 in {
   imports = [ # Include the results of the hardware scan.
@@ -159,6 +159,9 @@ in {
       notify_interval = 10; # in seconds; default is 15*60
     };
   };
+
+  # helps with getting minidlna to rescan the drives
+  security.doas.enable = true;
 
   services.calibre-web = {
     enable = true;
