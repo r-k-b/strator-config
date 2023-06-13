@@ -411,7 +411,11 @@ in {
       # expire ludicrously fast; if you get a 404, try getting a fresh token.
       tokenFile = "/home/rkb/.github-runner/tokens/phdsys-webapp";
       extraLabels = [ "nix" ];
-      extraPackages = with pkgs; [ openssh which ];
+      extraPackages = with pkgs; [ acl curl docker gawk openssh which ];
+      # don't forget to add the use for this runner to `users.groups.docker.members`, down below.
+      # (the username comes from the name of the runner, like `github-runners-phdsys-webapp`)
+      # Also, you may need to restart the `docker.service` and the `github-runner-phdsys-webapp.service`
+      # before the group change takes effect.
     };
   };
 
@@ -436,7 +440,7 @@ in {
   # https://github.com/NixOS/nixpkgs/issues/47201#issuecomment-423798284
   virtualisation.docker.enable = true;
 
-  users.groups.docker = { members = [ "traefik" ]; };
+  users.groups.docker = { members = [ "traefik" "github-runner-phdsys-webapp" ]; };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rkb = {
