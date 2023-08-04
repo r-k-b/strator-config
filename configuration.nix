@@ -400,7 +400,7 @@ in {
   };
 
   nixpkgs.config.permittedInsecurePackages = [
-    "nodejs-16.20.0" # for github-runners; see https://github.com/orgs/community/discussions/53217
+    "nodejs-16.20.1" # for github-runners; see https://github.com/orgs/community/discussions/53217
   ];
 
   services.github-runners = {
