@@ -403,22 +403,6 @@ in {
     "nodejs-16.20.1" # for github-runners; see https://github.com/orgs/community/discussions/53217
   ];
 
-  services.github-runners = {
-    phdsys-webapp = {
-      enable = true;
-      url = "https://github.com/Pacific-Health-Dynamics/PHDSys-webapp";
-      # tip: the tokens generated through the "Create self-hosted runner" web UI
-      # expire ludicrously fast; if you get a 404, try getting a fresh token.
-      tokenFile = "/home/rkb/.github-runner/tokens/phdsys-webapp";
-      extraLabels = [ "nix" ];
-      extraPackages = with pkgs; [ acl curl docker gawk openssh which ];
-      # don't forget to add the use for this runner to `users.groups.docker.members`, down below.
-      # (the username comes from the name of the runner, like `github-runners-phdsys-webapp`)
-      # Also, you may need to restart the `docker.service` and the `github-runner-phdsys-webapp.service`
-      # before the group change takes effect.
-    };
-  };
-
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
