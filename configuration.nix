@@ -3,7 +3,8 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-let prometheusPort = 9090;
+let
+  prometheusPort = 9090;
   minidlna-rebuild = pkgs.writeShellScriptBin "minidlna-rebuild" ''
     doas -u minidlna ${pkgs.minidlna}/bin/minidlnad -R && sudo systemctl restart minidlna.service
   '';
@@ -424,7 +425,9 @@ in {
   # https://github.com/NixOS/nixpkgs/issues/47201#issuecomment-423798284
   virtualisation.docker.enable = true;
 
-  users.groups.docker = { members = [ "traefik" "github-runner-phdsys-webapp" ]; };
+  users.groups.docker = {
+    members = [ "traefik" "github-runner-phdsys-webapp" ];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rkb = {
