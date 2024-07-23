@@ -191,8 +191,8 @@ in {
   };
 
   services.transmission = {
-    enable = true;
-    openFirewall = true;
+    enable = false;
+    openFirewall = false;
     settings = {
       download-dir = "/mnt/blestion/transmission/Downloads";
       incomplete-dir = "/mnt/blestion/transmission/.incomplete";
