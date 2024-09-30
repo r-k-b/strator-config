@@ -113,19 +113,21 @@ in {
   services.samba = {
     enable = true;
     securityType = "user";
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = smbnix
-      netbios name = smbnix
-      security = user 
-      use sendfile = yes
-      min protocol = smb2
-      max protocol = smb2
-      #hosts allow = 192.168.0  localhost
-      #hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-    '';
+    settings = {
+      "global" = {
+        "workgroup" = "WORKGROUP";
+        "security" = "user";
+        "server string" = "smbnix";
+        "netbios name" = "smbnix";
+        "use sendfile" = "yes";
+        "min protocol" = "smb2";
+        "max protocol" = "smb2";
+        #"hosts allow" = "192.168.0  localhost";
+        #"hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+      };
+    };
     shares = {
       blestion = {
         path = "/mnt/blestion";
@@ -248,12 +250,16 @@ in {
   # so we can use custom subdomains in development, and with traefik
   services.dnsmasq = {
     enable = true;
-    extraConfig = ''
-      address=/localhost/127.0.0.1
-      address=/nixos/192.168.1.103
-      address=/strator/192.168.1.98
-      server=/phd.com.au/10.20.60.10 # PHD VPN
-    '';
+    settings = {
+      address = [
+        "/localhost/127.0.0.1"
+        "/nixos/192.168.1.103"
+        "/strator/192.168.1.98"
+      ];
+      server = [
+        "/phd.com.au/10.20.60.10" # PHD VPN
+      ];
+    };
   };
 
   services.traefik = {
